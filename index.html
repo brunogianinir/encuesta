@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="es-AR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Encuesta · IA para tu comercio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#19271f;
+    --muted:#5f6f64;
+    --paper:#f4ede0;
+    --backdrop:#e8dfcd;
+    --surface:#fffdf8;
+    --forest:#123d2c;
+    --forest-2:#175238;
+    --leaf:#39a368;
+    --marigold:#f0a838;
+    --marigold-soft:#fcefd6;
+    --line:#e6dcc9;
+    --shadow:0 18px 50px rgba(18,61,44,.13);
+    --radius:20px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    font-family:'Inter',system-ui,sans-serif;
+    color:var(--ink);
+    background:var(--backdrop);
+    line-height:1.5;
+    padding:18px 14px 60px;
+    display:flex;
+    justify-content:center;
+  }
+  .card{
+    width:100%;
+    max-width:600px;
+    background:var(--surface);
+    border-radius:var(--radius);
+    overflow:hidden;
+    box-shadow:var(--shadow);
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    background:
+      radial-gradient(120% 90% at 88% -10%, var(--forest-2) 0%, transparent 55%),
+      var(--forest);
+    color:#f2ead9;
+    padding:30px 26px 34px;
+    position:relative;
+  }
+  .eyebrow{
+    display:flex;align-items:center;gap:9px;
+    font-size:.72rem;font-weight:600;letter-spacing:.14em;
+    text-transform:uppercase;color:#bcd6c5;
+    margin-bottom:22px;
+  }
+  .eyebrow .dot{width:7px;height:7px;border-radius:50%;background:var(--marigold);box-shadow:0 0 0 4px rgba(240,168,56,.2)}
+  .eyebrow .sep{flex:1;height:1px;background:rgba(188,214,197,.3)}
+  .hero h1{
+    font-family:'Bricolage Grotesque','Inter',sans-serif;
+    font-weight:800;
+    font-size:clamp(1.78rem,7.4vw,2.5rem);
+    line-height:1.04;
+    letter-spacing:-.02em;
+    margin-bottom:14px;
+  }
+  .hero h1 .hl{color:var(--marigold)}
+  .hero p{color:#cfe0d4;font-size:1.01rem;max-width:42ch}
+  .trust{
+    margin-top:20px;
+    display:flex;gap:11px;align-items:flex-start;
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(207,224,212,.16);
+    border-radius:13px;
+    padding:11px 13px;
+    font-size:.86rem;color:#dce8df;
+  }
+  .trust b{color:#fff;font-weight:600}
+  .trust .ico{font-size:1rem;line-height:1.3}
+
+  /* ---------- FORM ---------- */
+  .form{padding:8px 22px 26px;background:var(--paper)}
+  .q{
+    padding:24px 0 8px;
+    border-bottom:1px solid var(--line);
+  }
+  .q:last-of-type{border-bottom:none}
+  .q-head{display:flex;gap:11px;margin-bottom:15px}
+  .q-num{
+    font-family:'Bricolage Grotesque',sans-serif;
+    font-weight:700;font-size:.82rem;
+    color:var(--leaf);
+    padding-top:3px;min-width:24px;
+  }
+  .q-title{font-weight:600;font-size:1.08rem;letter-spacing:-.01em;line-height:1.28}
+  .q-hint{display:block;font-weight:400;font-size:.85rem;color:var(--muted);margin-top:4px}
+
+  input[type=text],textarea{
+    width:100%;
+    font-family:inherit;font-size:1rem;color:var(--ink);
+    background:var(--surface);
+    border:1.5px solid var(--line);
+    border-radius:12px;
+    padding:13px 14px;
+    transition:border-color .15s,box-shadow .15s;
+  }
+  textarea{resize:vertical;min-height:84px}
+  input[type=text]:focus,textarea:focus{
+    outline:none;
+    border-color:var(--leaf);
+    box-shadow:0 0 0 3px rgba(57,163,104,.16);
+  }
+  input::placeholder,textarea::placeholder{color:#a7b1a8}
+
+  /* chips (single select) */
+  .chips{display:flex;flex-wrap:wrap;gap:9px}
+  .chip{
+    font-family:inherit;font-size:.92rem;font-weight:500;color:var(--ink);
+    background:var(--surface);
+    border:1.5px solid var(--line);
+    border-radius:999px;
+    padding:10px 16px;
+    cursor:pointer;
+    transition:border-color .15s,background .15s,transform .08s;
+  }
+  .chip:hover{border-color:#cdbf9f}
+  .chip:active{transform:scale(.97)}
+  .chip.is-selected{
+    background:var(--marigold-soft);
+    border-color:var(--marigold);
+    color:#8a5a12;
+    font-weight:600;
+  }
+
+  /* pain tiles (signature, multi) */
+  .tiles{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+  .tile{
+    text-align:left;font-family:inherit;cursor:pointer;
+    background:var(--surface);
+    border:1.5px solid var(--line);
+    border-radius:15px;
+    padding:15px 14px 14px;
+    position:relative;
+    transition:border-color .15s,background .15s,transform .08s,box-shadow .15s;
+  }
+  .tile:hover{border-color:#cdbf9f;box-shadow:0 6px 18px rgba(18,61,44,.07)}
+  .tile:active{transform:scale(.985)}
+  .tile .emoji{font-size:1.5rem;display:block;margin-bottom:9px}
+  .tile .t-name{font-weight:600;font-size:.97rem;line-height:1.2;letter-spacing:-.01em;display:block;margin-bottom:4px}
+  .tile .t-eg{font-size:.8rem;color:var(--muted);line-height:1.32;display:block}
+  .tile .check{
+    position:absolute;top:11px;right:11px;
+    width:21px;height:21px;border-radius:50%;
+    border:1.5px solid var(--line);background:var(--surface);
+    display:flex;align-items:center;justify-content:center;
+    font-size:.72rem;color:#fff;transition:all .15s;
+  }
+  .tile.is-selected{
+    background:var(--marigold-soft);
+    border-color:var(--marigold);
+    box-shadow:0 8px 20px rgba(240,168,56,.16);
+  }
+  .tile.is-selected .check{background:var(--marigold);border-color:var(--marigold)}
+  .tile.is-selected .t-name{color:#7d5210}
+  .tiles-note{font-size:.78rem;color:var(--marigold);font-weight:600;margin-top:10px;min-height:1.1em;transition:opacity .2s}
+
+  /* the golden question */
+  .q-gold .q-title{color:var(--forest)}
+  .q-gold textarea{border-color:var(--marigold);background:#fffaf0}
+  .q-gold textarea:focus{box-shadow:0 0 0 3px rgba(240,168,56,.2)}
+
+  .contact-grid{display:grid;gap:11px}
+
+  /* CTA + footer */
+  .submit-wrap{padding:26px 0 6px}
+  .cta{
+    width:100%;font-family:'Bricolage Grotesque',sans-serif;
+    font-weight:700;font-size:1.08rem;color:var(--ink);
+    background:var(--marigold);
+    border:none;border-radius:14px;
+    padding:16px;cursor:pointer;
+    box-shadow:0 10px 24px rgba(240,168,56,.32);
+    transition:transform .1s,box-shadow .15s,filter .15s;
+  }
+  .cta:hover{filter:brightness(1.03);box-shadow:0 13px 30px rgba(240,168,56,.4)}
+  .cta:active{transform:translateY(1px)}
+  .cta:disabled{filter:saturate(.5) brightness(1.05);cursor:default;box-shadow:none}
+  .foot{text-align:center;font-size:.78rem;color:var(--muted);margin-top:16px;padding:0 10px}
+  .send-error{
+    margin-top:14px;background:#fdecec;border:1.5px solid #f0b8b8;border-radius:12px;
+    padding:13px 15px;font-size:.88rem;color:#8a2f2f;
+    display:flex;flex-direction:column;gap:10px;align-items:flex-start;
+  }
+  .send-error .copy-btn{border-color:#c98a8a;color:#8a2f2f}
+  .send-error .copy-btn:hover{background:rgba(201,138,138,.1)}
+
+  /* confirmation */
+  .done{display:none;padding:48px 30px 54px;text-align:center;background:var(--paper)}
+  .done.show{display:block}
+  .done .big{font-size:2.6rem;margin-bottom:14px}
+  .done h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.55rem;letter-spacing:-.02em;margin-bottom:10px}
+  .done p{color:var(--muted);max-width:34ch;margin:0 auto 22px}
+  .copy-btn{
+    font-family:inherit;font-weight:600;font-size:.92rem;color:var(--forest);
+    background:transparent;border:1.5px solid var(--leaf);border-radius:11px;
+    padding:11px 20px;cursor:pointer;transition:background .15s;
+  }
+  .copy-btn:hover{background:rgba(57,163,104,.08)}
+
+  @media (max-width:380px){
+    .tiles{grid-template-columns:1fr}
+    .hero,.form{padding-left:18px;padding-right:18px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none!important;animation:none!important}
+  }
+  .fade{animation:fade .6s ease both}
+  @keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div class="card">
+
+  <!-- HERO -->
+  <header class="hero fade">
+    <div class="eyebrow">
+      <span class="dot"></span>
+      <span>Soluciones para comercio</span>
+      <span class="sep"></span>
+      <span>2 min</span>
+    </div>
+    <h1>Contanos qué te <span class="hl">complica el día</span> en el negocio.</h1>
+    <p>Ayudamos a comercios de la zona a usar IA para vender más, gastar menos y sacarse tareas pesadas de encima. Decinos cómo es tu día y te mostramos qué se podría resolver.</p>
+    <div class="trust">
+      <span class="ico">&#128296;</span>
+      <span>Ya lo hicimos: armamos una app que le ordenó <b>todo el registro de datos a una fábrica</b>. No es charla, implementamos.</span>
+    </div>
+  </header>
+
+  <!-- FORM -->
+  <main class="form" id="form">
+
+    <section class="q">
+      <div class="q-head"><span class="q-num">01</span><span class="q-title">¿A qué se dedica tu negocio?</span></div>
+      <input type="text" id="rubro" placeholder="Ej.: panadería, ferretería, kiosco, peluquería…">
+    </section>
+
+    <section class="q">
+      <div class="q-head"><span class="q-num">02</span><span class="q-title">¿Cuántos son en el negocio?</span></div>
+      <div class="chips" data-single="tamano">
+        <button type="button" class="chip">Solo yo</button>
+        <button type="button" class="chip">2 a 5</button>
+        <button type="button" class="chip">6 a 15</button>
+        <button type="button" class="chip">Más de 15</button>
+      </div>
+    </section>
+
+    <section class="q">
+      <div class="q-head"><span class="q-num">03</span><span class="q-title">¿Qué es lo que más te complica hoy?<span class="q-hint">Lo que te come tiempo, te hace perder plata o te da dolor de cabeza. Elegí 1 o 2.</span></span></div>
+      <div class="tiles" id="tiles">
+        <button type="button" class="tile" data-pain="Atención al cliente"><span class="check">✓</span><span class="emoji">📞</span><span class="t-name">Atender a los clientes</span><span class="t-eg">WhatsApp, teléfono y redes, todo el día respondiendo</span></button>
+        <button type="button" class="tile" data-pain="Cerrar más ventas"><span class="check">✓</span><span class="emoji">💰</span><span class="t-name">Cerrar más ventas</span><span class="t-eg">clientes que preguntan y después no vuelven</span></button>
+        <button type="button" class="tile" data-pain="Marketing y redes"><span class="check">✓</span><span class="emoji">📣</span><span class="t-name">Marketing y redes</span><span class="t-eg">conseguir clientes nuevos y estar presente</span></button>
+        <button type="button" class="tile" data-pain="Stock y proveedores"><span class="check">✓</span><span class="emoji">📦</span><span class="t-name">Stock y proveedores</span><span class="t-eg">quedarte sin mercadería o comprar de más</span></button>
+        <button type="button" class="tile" data-pain="Papeleo y cobranzas"><span class="check">✓</span><span class="emoji">🧾</span><span class="t-name">Papeleo y cobranzas</span><span class="t-eg">facturas, comprobantes y perseguir pagos</span></button>
+        <button type="button" class="tile" data-pain="Saber cómo va el negocio"><span class="check">✓</span><span class="emoji">📊</span><span class="t-name">Saber cómo va</span><span class="t-eg">qué se vende, qué conviene, qué decidir</span></button>
+        <button type="button" class="tile" data-pain="Otro"><span class="check">✓</span><span class="emoji">✏️</span><span class="t-name">Otra cosa</span><span class="t-eg">contanos cuál acá abajo</span></button>
+      </div>
+      <input type="text" id="otroPain" placeholder="¿Cuál? Contanos en pocas palabras" hidden style="margin-top:11px">
+      <div class="tiles-note" id="tilesNote"></div>
+    </section>
+
+    <section class="q">
+      <div class="q-head"><span class="q-num">04</span><span class="q-title">Eso que marcaste, ¿cuánto tiempo te come por semana?</span></div>
+      <div class="chips" data-single="tiempo">
+        <button type="button" class="chip">Menos de 2 hs</button>
+        <button type="button" class="chip">2 a 5 hs</button>
+        <button type="button" class="chip">5 a 10 hs</button>
+        <button type="button" class="chip">Más de 10 hs</button>
+      </div>
+    </section>
+
+    <section class="q">
+      <div class="q-head"><span class="q-num">05</span><span class="q-title">Hoy, ¿cómo lo resolvés?</span></div>
+      <div class="chips" data-single="resuelve">
+        <button type="button" class="chip">Lo hago yo a mano</button>
+        <button type="button" class="chip">Alguien dedicado a eso</button>
+        <button type="button" class="chip">Un programa o app</button>
+        <button type="button" class="chip">Lo dejo pasar</button>
+        <button type="button" class="chip">Otros</button>
+      </div>
+    </section>
+
+    <section class="q">
+      <div class="q-head"><span class="q-num">06</span><span class="q-title">Si algo te lo resolviera casi solo, ¿cuánto pagarías por mes?</span></div>
+      <div class="chips" data-single="paga">
+        <button type="button" class="chip">No pagaría</button>
+        <button type="button" class="chip">Hasta $20.000</button>
+        <button type="button" class="chip">$20.000 a $100.000</button>
+        <button type="button" class="chip">Más de $100.000</button>
+        <button type="button" class="chip">Depende de verlo</button>
+      </div>
+    </section>
+
+    <section class="q q-gold">
+      <div class="q-head"><span class="q-num">07</span><span class="q-title">Si pudieras chasquear los dedos y que UNA tarea se haga sola… ¿cuál sería?<span class="q-hint">La que más bronca te da. Contanos con tus palabras.</span></span></div>
+      <textarea id="magia" placeholder="Lo que se me viene a la cabeza es…"></textarea>
+    </section>
+
+    <section class="q">
+      <div class="q-head"><span class="q-num">08</span><span class="q-title">¿Te mostramos cómo resolverlo?<span class="q-hint">Dejanos tu contacto y te escribimos, sin compromiso.</span></span></div>
+      <div class="contact-grid">
+        <input type="text" id="nombre" placeholder="Tu nombre">
+        <input type="text" id="wsp" placeholder="Tu WhatsApp">
+      </div>
+    </section>
+
+    <div class="submit-wrap">
+      <button type="button" class="cta" id="enviar">Enviar mis respuestas</button>
+      <div class="send-error" id="sendError" hidden>
+        <span>No pudimos enviar las respuestas ahora. Revisá la conexión y probá de nuevo, o copialas y mandánoslas por WhatsApp.</span>
+        <button type="button" class="copy-btn" id="copiarErr">Copiar respuestas</button>
+      </div>
+      <p class="foot">Tus respuestas nos ayudan a entender qué necesitan los comercios de la zona. Gracias por el tiempo. 🙌</p>
+    </div>
+  </main>
+
+  <!-- CONFIRMATION -->
+  <div class="done" id="done">
+    <div class="big">🙌</div>
+    <h2>¡Gracias, de verdad!</h2>
+    <p>Ya nos llegó tu respuesta. Si dejaste tu contacto, te escribimos para mostrarte cómo resolver lo que marcaste.</p>
+    <button type="button" class="copy-btn" id="copiar">Copiar mis respuestas</button>
+  </div>
+
+</div>
+
+<script>
+  // =========================================================================
+  //  CONFIGURACIÓN: las respuestas se envían a este mail vía FormSubmit (gratis).
+  //  IMPORTANTE (una sola vez): la primera vez que se envíe el formulario desde
+  //  la página YA PUBLICADA, FormSubmit te manda un mail de confirmación a esta
+  //  casilla. Hacé clic en el enlace de ese mail para activar el reenvío.
+  //  Recién después de activarlo te van a llegar las respuestas.
+  // =========================================================================
+  const EMAIL_DESTINO = "brunogianinir@gmail.com";
+  const ENDPOINT = "https://formsubmit.co/ajax/" + EMAIL_DESTINO;
+
+  const state = { rubro:"", tamano:"", pains:[], otroPain:"", tiempo:"", resuelve:"", paga:"", magia:"", nombre:"", wsp:"" };
+
+  // chip groups (single select)
+  document.querySelectorAll('.chips').forEach(group=>{
+    const key = group.dataset.single;
+    group.querySelectorAll('.chip').forEach(chip=>{
+      chip.addEventListener('click',()=>{
+        const was = chip.classList.contains('is-selected');
+        group.querySelectorAll('.chip').forEach(c=>c.classList.remove('is-selected'));
+        if(!was){ chip.classList.add('is-selected'); state[key]=chip.textContent.trim(); }
+        else { state[key]=""; }
+      });
+    });
+  });
+
+  // pain tiles (multi, max 2)
+  const note = document.getElementById('tilesNote');
+  const otroInput = document.getElementById('otroPain');
+  document.querySelectorAll('#tiles .tile').forEach(tile=>{
+    tile.addEventListener('click',()=>{
+      const val = tile.dataset.pain;
+      const sel = tile.classList.contains('is-selected');
+      if(sel){
+        tile.classList.remove('is-selected');
+        state.pains = state.pains.filter(p=>p!==val);
+        note.textContent="";
+        if(val==="Otro"){ otroInput.hidden=true; otroInput.value=""; state.otroPain=""; }
+      } else if(state.pains.length>=2){
+        note.textContent="Elegí las 2 que más te pesan 🙂";
+        note.style.opacity=1;
+        setTimeout(()=>{note.style.opacity=0;},1800);
+      } else {
+        tile.classList.add('is-selected');
+        state.pains.push(val);
+        note.textContent="";
+        if(val==="Otro"){ otroInput.hidden=false; otroInput.focus(); }
+      }
+    });
+  });
+
+  function collect(){
+    state.rubro=document.getElementById('rubro').value.trim();
+    state.otroPain=document.getElementById('otroPain').value.trim();
+    state.magia=document.getElementById('magia').value.trim();
+    state.nombre=document.getElementById('nombre').value.trim();
+    state.wsp=document.getElementById('wsp').value.trim();
+  }
+
+  // arma el texto de "lo que más complica", incluyendo el detalle de "Otro"
+  function painsText(){
+    if(!state.pains.length) return "—";
+    return state.pains.map(p=> p==="Otro" ? ("Otro: "+(state.otroPain||"(sin especificar)")) : p).join(" + ");
+  }
+
+  // texto legible (para el botón de copiar / fallback)
+  function buildMessage(){
+    const L=[];
+    L.push("Nueva respuesta — encuesta comercios");
+    L.push("");
+    if(state.nombre) L.push("Nombre: "+state.nombre + (state.wsp? "  ·  "+state.wsp : ""));
+    else if(state.wsp) L.push("WhatsApp: "+state.wsp);
+    if(state.rubro) L.push("Rubro: "+state.rubro);
+    if(state.tamano) L.push("Tamaño: "+state.tamano);
+    L.push("");
+    L.push("Lo que más complica: "+painsText());
+    if(state.tiempo) L.push("Tiempo por semana: "+state.tiempo);
+    if(state.resuelve) L.push("Hoy lo resuelve: "+state.resuelve);
+    if(state.paga) L.push("Pagaría: "+state.paga);
+    if(state.magia){ L.push(""); L.push("Si chasqueara los dedos: "+state.magia); }
+    return L.join("\n");
+  }
+
+  // datos estructurados para el mail (FormSubmit arma una tabla prolija)
+  function buildPayload(){
+    return {
+      _subject:"Nueva respuesta — encuesta comercios",
+      _template:"table",
+      _captcha:"false",
+      "Rubro": state.rubro || "—",
+      "Tamaño del negocio": state.tamano || "—",
+      "Lo que más complica": painsText(),
+      "Tiempo por semana": state.tiempo || "—",
+      "Hoy lo resuelve": state.resuelve || "—",
+      "Pagaría por mes": state.paga || "—",
+      "Si chasqueara los dedos": state.magia || "—",
+      "Nombre": state.nombre || "—",
+      "WhatsApp": state.wsp || "—"
+    };
+  }
+
+  function fallbackCopy(txt, ok){
+    const ta=document.createElement('textarea'); ta.value=txt; document.body.appendChild(ta);
+    ta.select(); try{ document.execCommand('copy'); ok(); }catch(_){ } document.body.removeChild(ta);
+  }
+  function copyText(btn, label){
+    const txt = window.__lastMsg || buildMessage();
+    const ok = ()=>{ btn.textContent="¡Copiado! ✓"; setTimeout(()=>btn.textContent=label,1800); };
+    if(navigator.clipboard){ navigator.clipboard.writeText(txt).then(ok).catch(()=>fallbackCopy(txt,ok)); }
+    else fallbackCopy(txt,ok);
+  }
+
+  const enviarBtn = document.getElementById('enviar');
+  const sendError = document.getElementById('sendError');
+
+  enviarBtn.addEventListener('click', async ()=>{
+    collect();
+    if(state.pains.length===0){
+      note.textContent="Marcá al menos lo que más te complica 👆";
+      note.style.opacity=1;
+      document.getElementById('tiles').scrollIntoView({behavior:'smooth',block:'center'});
+      return;
+    }
+    sendError.hidden = true;
+    const original = enviarBtn.textContent;
+    enviarBtn.disabled = true;
+    enviarBtn.textContent = "Enviando…";
+    window.__lastMsg = buildMessage();
+    try{
+      const res = await fetch(ENDPOINT, {
+        method:"POST",
+        headers:{ "Content-Type":"application/json", "Accept":"application/json" },
+        body: JSON.stringify(buildPayload())
+      });
+      if(!res.ok) throw new Error("status "+res.status);
+      document.getElementById('form').style.display='none';
+      const done=document.getElementById('done');
+      done.classList.add('show','fade');
+      done.scrollIntoView({behavior:'smooth',block:'start'});
+    }catch(err){
+      enviarBtn.disabled=false;
+      enviarBtn.textContent=original;
+      sendError.hidden=false;
+    }
+  });
+
+  document.getElementById('copiar').addEventListener('click',(e)=>copyText(e.currentTarget,"Copiar mis respuestas"));
+  document.getElementById('copiarErr').addEventListener('click',(e)=>copyText(e.currentTarget,"Copiar respuestas"));
+</script>
+</body>
+</html>
