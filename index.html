@@ -253,7 +253,7 @@
     </section>
 
     <section class="q">
-      <div class="q-head"><span class="q-num">02</span><span class="q-title">¿Qué es lo que más te complica hoy?<span class="q-hint">Lo que te come tiempo, te hace perder plata o te da dolor de cabeza. Podés elegir hasta 3.</span></span></div>
+      <div class="q-head"><span class="q-num">02</span><span class="q-title">¿Qué es lo que más te complica hoy?<span class="q-hint">Lo que te consume tiempo, te hace perder plata o te da dolor de cabeza. Podés elegir hasta 3.</span></span></div>
       <div class="tiles" id="tiles">
         <button type="button" class="tile" data-pain="Atención al cliente"><span class="check">✓</span><span class="emoji">📞</span><span class="t-name">Atender a los clientes</span><span class="t-eg">WhatsApp, teléfono y redes, todo el día respondiendo</span></button>
         <button type="button" class="tile" data-pain="Cerrar más ventas"><span class="check">✓</span><span class="emoji">💰</span><span class="t-name">Cerrar más ventas</span><span class="t-eg">clientes que preguntan y después no vuelven</span></button>
@@ -286,6 +286,7 @@
         <button type="button" class="chip">Lo dejo pasar</button>
         <button type="button" class="chip">Otros</button>
       </div>
+      <input type="text" id="otroResuelve" placeholder="¿Cómo? Contanos en pocas palabras" hidden style="margin-top:11px">
     </section>
 
     <section class="q">
@@ -342,7 +343,7 @@
   const EMAIL_DESTINO = "brunogianinir@gmail.com";
   const ENDPOINT = "https://formsubmit.co/ajax/" + EMAIL_DESTINO;
 
-  const state = { rubro:"", pains:[], otroPain:"", tiempo:"", resuelve:"", paga:"", magia:"", nombre:"", wsp:"" };
+  const state = { rubro:"", pains:[], otroPain:"", tiempo:"", resuelve:"", otroResuelve:"", paga:"", magia:"", nombre:"", wsp:"" };
 
   // ---- errores de validación ----
   function clearErrors(){
@@ -360,6 +361,7 @@
   }
 
   // chip groups (single select)
+  const otroResuelveInput = document.getElementById('otroResuelve');
   document.querySelectorAll('.chips').forEach(group=>{
     const key = group.dataset.single;
     group.querySelectorAll('.chip').forEach(chip=>{
@@ -369,6 +371,12 @@
         group.querySelectorAll('.chip').forEach(c=>c.classList.remove('is-selected'));
         if(!was){ chip.classList.add('is-selected'); state[key]=chip.textContent.trim(); }
         else { state[key]=""; }
+        if(key==="resuelve"){
+          const show = state.resuelve==="Otros";
+          otroResuelveInput.hidden = !show;
+          if(!show){ otroResuelveInput.value=""; state.otroResuelve=""; }
+          else { otroResuelveInput.focus(); }
+        }
       });
     });
   });
@@ -400,7 +408,7 @@
   });
 
   // limpiar errores al escribir
-  ['rubro','otroPain','magia','nombre','wsp'].forEach(id=>{
+  ['rubro','otroPain','otroResuelve','magia','nombre','wsp'].forEach(id=>{
     const el=document.getElementById(id);
     if(el) el.addEventListener('input', clearErrors);
   });
@@ -408,6 +416,7 @@
   function collect(){
     state.rubro=document.getElementById('rubro').value.trim();
     state.otroPain=document.getElementById('otroPain').value.trim();
+    state.otroResuelve=document.getElementById('otroResuelve').value.trim();
     state.magia=document.getElementById('magia').value.trim();
     state.nombre=document.getElementById('nombre').value.trim();
     state.wsp=document.getElementById('wsp').value.trim();
@@ -418,6 +427,9 @@
     if(!state.pains.length) return "—";
     return state.pains.map(p=> p==="Otro" ? ("Otro: "+(state.otroPain||"(sin especificar)")) : p).join(" + ");
   }
+  function resuelveText(){
+    return state.resuelve==="Otros" ? ("Otros: "+(state.otroResuelve||"(sin especificar)")) : state.resuelve;
+  }
 
   // validación: todos los campos son obligatorios
   function validate(){
@@ -427,6 +439,7 @@
     if(state.pains.includes("Otro") && !state.otroPain) return fail('otroPain', "Contanos qué es esa 'otra cosa'.");
     if(!state.tiempo) return failGroup('tiempo', "Elegí una opción.");
     if(!state.resuelve) return failGroup('resuelve', "Elegí una opción.");
+    if(state.resuelve==="Otros" && !state.otroResuelve) return fail('otroResuelve', "Contanos cómo lo resolvés.");
     if(!state.paga) return failGroup('paga', "Elegí una opción.");
     if(!state.magia) return fail('magia', "Contanos cuál sería esa tarea.");
     if(!state.nombre) return fail('nombre', "Dejanos tu nombre.");
@@ -457,7 +470,7 @@
     L.push("");
     L.push("Lo que más complica: "+painsText());
     L.push("Tiempo por semana: "+state.tiempo);
-    L.push("Hoy lo resuelve: "+state.resuelve);
+    L.push("Hoy lo resuelve: "+resuelveText());
     L.push("Pagaría: "+state.paga);
     L.push("");
     L.push("Si chasqueara los dedos: "+state.magia);
@@ -473,7 +486,7 @@
       "Rubro": state.rubro,
       "Lo que más complica": painsText(),
       "Tiempo por semana": state.tiempo,
-      "Hoy lo resuelve": state.resuelve,
+      "Hoy lo resuelve": resuelveText(),
       "Pagaría por mes": state.paga,
       "Si chasqueara los dedos": state.magia,
       "Nombre": state.nombre,
